@@ -4,24 +4,78 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Code along:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Implement service without JSON formatting
 
-## Build
+#### Environment
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+    export const environment = {
+        openai_key: '<TOKEN>'
+    };
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+#### Configuration
 
-## Running end-to-end tests
+    configuration = new Configuration({ apiKey: environment.openai_key });
+    openai = new OpenAIApi(this.configuration);
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+#### System Prompt
 
-## Further help
+    const messages: ChatCompletionRequestMessage[] = [
+      {
+        role: 'system',
+        content: `You will be asked for random quotes from the works of Shakespeare. You change the quote as if it was given by a ${style}. You don't use the quote 'To be or not to be'`,
+      },
+    ];
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+#### User prompt
+
+Add to messages list:
+
+      { role: 'user', content: `Give me a random shakespeare quote.` },
+
+#### Run createChatCompletion
+
+    this.openai
+      .createChatCompletion({
+        model: 'gpt-4',
+        messages: messages,
+        temperature: 1,
+        max_tokens: 1000,
+      })
+      .then((res) => {
+        const content = res.data.choices[0].message?.content;
+        if (content != null) {
+          const quoteData = JSON.parse(content) as QuoteData;
+          this.shakespeareQuote.set(quoteData);
+        }
+      })
+      .catch((err) => this.shakespeareQuoteErr.set(err))
+      .finally(() => this.loading.set(false));
+
+#### Edit prompt to not do <em>To be or not to be</em>
+
+    const messages: ChatCompletionRequestMessage[] = [
+      {
+        role: 'system',
+        content: `You will be asked for random quotes from the works of Shakespeare. You change the quote as if it was given by a ${style}. You don't use the quote 'To be or not to be'`,
+      },
+    ];
+
+### Add JSON formatting
+
+#### User prompt or system prompt
+
+Add the following to the user or system prompt
+
+      Your response should be in JSON format {styledQuote: string, originalQuote: string, play: string, act: string, scene: string}
+
+#### Update HTML
+
+
+
+
+

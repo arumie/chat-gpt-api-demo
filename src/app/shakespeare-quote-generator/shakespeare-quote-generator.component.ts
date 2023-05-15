@@ -5,11 +5,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 import { ShakespeareQuoteService } from './shakespeare-quote.service';
 import { NgIf } from '@angular/common';
+import { QuoteNoFormatComponent } from './quote-no-format/quote-no-format.component';
+import { QuoteWithFormatComponent } from './quote-with-format/quote-with-format.component';
 
 @Component({
   selector: 'shakespeare-quote-generator',
   standalone: true,
-  imports: [MatButtonModule, MatCardModule, MatProgressSpinnerModule, MatDividerModule, NgIf],
+  imports: [MatButtonModule, MatCardModule, MatProgressSpinnerModule, MatDividerModule, NgIf, QuoteWithFormatComponent, QuoteNoFormatComponent],
   providers: [ShakespeareQuoteService],
   templateUrl: './shakespeare-quote-generator.component.html',
 })
@@ -21,7 +23,7 @@ export class ShakespeareQuoteGeneratorComponent {
   );
 
   public quote = computed(() =>
-    this.shakespeareQuoteService.loading() ? undefined : this.shakespeareQuoteService.shakespeareQuote()
+    this.shakespeareQuoteService.shakespeareQuote()
   );
 
   public loading = computed(() => this.shakespeareQuoteService.loading());

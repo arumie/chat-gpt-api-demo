@@ -27,6 +27,7 @@ export class ShakespeareQuoteService {
 
   public async fetchShakespeareQuote(style: string) {
     this.loading.set(true);
+    this.shakespeareQuoteErr.set(null);
     const messages: ChatCompletionRequestMessage[] = [
       {
         role: 'system',

@@ -13,6 +13,8 @@
     Generate Shakespeare Quote
   </button>
 
+  
+    <!-- Quote template -->
   <mat-card class="mt-5 min-w-[800px] mx-auto">
     <ng-container *ngIf="error() != null">
       <mat-card-header>
@@ -24,22 +26,9 @@
       </mat-card-content>
     </ng-container>
 
-    <ng-container *ngIf="quote() as quote">
-      <mat-card-header>
-        <mat-card-title
-          >{{ quote.play }}, {{ quote.act }}, {{ quote.scene }}</mat-card-title
-        >
-        <mat-card-subtitle>
-          <span
-            >In the style of a {{ style }}. Original:
-            {{ quote.originalQuote }}</span
-          >
-        </mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <mat-divider class="my-5"></mat-divider>
-        <p class="text-lg">{{ quote.styledQuote }}</p>
-      </mat-card-content>
+    <!-- Quote template -->
+    <ng-container *ngIf="loading">
+        <quote-with-format [quote]="quote()" [style]="style ?? ''"></quote-with-format>
     </ng-container>
 
     <ng-container *ngIf="loading()">
