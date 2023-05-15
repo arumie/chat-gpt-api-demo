@@ -27,7 +27,7 @@
     </ng-container>
 
     <!-- Quote template -->
-    <ng-container *ngIf="loading">
+    <ng-container *ngIf="!loading()">
         <quote-with-format [quote]="quote()" [style]="style ?? ''"></quote-with-format>
     </ng-container>
 
