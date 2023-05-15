@@ -6,16 +6,39 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
+
+## Technologies
+
+* Angular 16
+* Angular Material
+* TailwindCSS
+* OpenAI API
+
 ## Code along:
 
-### Implement service without JSON formatting
+### Prerequisites
+
+Install NodeJS: https://nodejs.org/en/download
+
+Install GitBash or equivalent terminal to run NPM: https://git-scm.com/download/win
+
+Install IDE to work in. Example VSCode: https://code.visualstudio.com/download
+
+Go to the **codealong** branch
+
+    git checkout codealong
+
+Go to the root folder of the code and install the dependencies using NPM
+
+    npm install
+
+### 1. Implement service without JSON formatting
 
 #### Environment
 
     export const environment = {
         openai_key: '<TOKEN>'
     };
-
 
 #### Configuration
 
@@ -65,7 +88,7 @@ Add to messages list:
       },
     ];
 
-### Add JSON formatting
+### 2. Add JSON formatting
 
 #### User prompt or system prompt
 
@@ -73,9 +96,26 @@ Add the following to the user or system prompt
 
       Your response should be in JSON format {styledQuote: string, originalQuote: string, play: string, act: string, scene: string}
 
+#### Add QuoteData type
+
+    export type QuoteData = {
+        styledQuote: string;
+        originalQuote: string;
+        play: string;
+        act: string;
+        scene: string;
+    };
+
+#### Update shakespeareQuote type
+
+    shakespeareQuote: WritableSignal<QuoteData | null> = signal(null);
+
 #### Update HTML
 
+Use `<quote-with-format></quote-with-format>` instead of `<quote-no-format></quote-no-format>`
 
+    <quote-with-format [quote]="quote()" [style]="style ?? ''"></quote-with-format>
 
+### 3. Add context in order to generate more quotes
 
 

@@ -2,7 +2,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { QuoteData } from '../shakespeare-quote.service';
 
 @Component({
   selector: 'quote-with-format',
@@ -29,6 +28,12 @@ import { QuoteData } from '../shakespeare-quote.service';
   `,
 })
 export class QuoteWithFormatComponent {
-  @Input({ required: true }) quote: QuoteData | null = null;
+  @Input({ required: true }) quote: {
+    styledQuote: string;
+    originalQuote: string;
+    play: string;
+    act: string;
+    scene: string;
+  } | null = null;
   @Input({ required: true }) style: string = '';
 }
