@@ -1,0 +1,49 @@
+<div class="grid w-screen px-[35%] pt-10">
+
+    <img class="rounded-lg h-[400px] mx-auto mb-5" [src]="'/assets/shakespeare-' + style + '.png'" alt="image">
+  <button
+    mat-raised-button
+    class="w-[400px] mx-auto"
+    color="primary"
+    (click)="shakespeareQuoteService.fetchShakespeareQuote(style ?? 'normal')"
+  >
+    Generate Shakespeare Quote
+  </button>
+
+  <ng-container *ngIf="error() != null">
+    <mat-card class="mt-5">
+      <mat-card-header>
+        <mat-card-title>Error!</mat-card-title>
+        <mat-card-subtitle>{{ error().code }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ error().message }}</p>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+
+  <ng-container *ngIf="quote() != null && !loading()">
+    <mat-card class="mt-5">
+      <mat-card-header>
+        <mat-card-title>Quote</mat-card-title>
+        <mat-card-subtitle>in the style of a {{ style }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <p class="py-10 text-lg">{{ quote() }}</p>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+
+  <ng-container *ngIf="loading()">
+    <mat-card class="mt-5">
+      <mat-card-content class="m-auto">
+        <mat-progress-spinner
+          [color]="'primary'"
+          [mode]="'indeterminate'"
+          [value]="50"
+        ></mat-progress-spinner>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+</div>
