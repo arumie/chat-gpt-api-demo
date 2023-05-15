@@ -1,6 +1,9 @@
-<div class="grid w-screen px-[35%] pt-10">
-
-    <img class="rounded-lg h-[400px] mx-auto mb-5" [src]="'/assets/shakespeare-' + style + '.png'" alt="image">
+<div class="grid w-screen pt-10">
+  <img
+    class="rounded-lg h-[400px] mx-auto mb-5"
+    [src]="'/assets/shakespeare-' + style + '.png'"
+    alt="image"
+  />
   <button
     mat-raised-button
     class="w-[400px] mx-auto"
@@ -10,8 +13,8 @@
     Generate Shakespeare Quote
   </button>
 
-  <ng-container *ngIf="error() != null">
-    <mat-card class="mt-5">
+  <mat-card class="mt-5 min-w-[800px] mx-auto">
+    <ng-container *ngIf="error() != null">
       <mat-card-header>
         <mat-card-title>Error!</mat-card-title>
         <mat-card-subtitle>{{ error().code }}</mat-card-subtitle>
@@ -19,24 +22,27 @@
       <mat-card-content>
         <p>{{ error().message }}</p>
       </mat-card-content>
-    </mat-card>
-  </ng-container>
+    </ng-container>
 
-  <ng-container *ngIf="quote() != null && !loading()">
-    <mat-card class="mt-5">
+    <ng-container *ngIf="quote() as quote">
       <mat-card-header>
-        <mat-card-title>Quote</mat-card-title>
-        <mat-card-subtitle>in the style of a {{ style }}</mat-card-subtitle>
+        <mat-card-title
+          >{{ quote.play }}, {{ quote.act }}, {{ quote.scene }}</mat-card-title
+        >
+        <mat-card-subtitle>
+          <span
+            >In the style of a {{ style }}. Original:
+            {{ quote.originalQuote }}</span
+          >
+        </mat-card-subtitle>
       </mat-card-header>
-      <mat-divider></mat-divider>
       <mat-card-content>
-        <p class="py-10 text-lg">{{ quote() }}</p>
+        <mat-divider class="my-5"></mat-divider>
+        <p class="text-lg">{{ quote.styledQuote }}</p>
       </mat-card-content>
-    </mat-card>
-  </ng-container>
+    </ng-container>
 
-  <ng-container *ngIf="loading()">
-    <mat-card class="mt-5">
+    <ng-container *ngIf="loading()">
       <mat-card-content class="m-auto">
         <mat-progress-spinner
           [color]="'primary'"
@@ -44,6 +50,6 @@
           [value]="50"
         ></mat-progress-spinner>
       </mat-card-content>
-    </mat-card>
-  </ng-container>
+    </ng-container>
+  </mat-card>
 </div>

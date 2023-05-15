@@ -21,7 +21,7 @@ export class ShakespeareQuoteGeneratorComponent {
   );
 
   public quote = computed(() =>
-    this.shakespeareQuoteService.shakespeareQuote()
+    this.shakespeareQuoteService.loading() ? undefined : this.shakespeareQuoteService.shakespeareQuote()
   );
 
   public loading = computed(() => this.shakespeareQuoteService.loading());

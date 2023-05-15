@@ -1,24 +1,25 @@
 import { Injectable, WritableSignal, signal } from '@angular/core';
-import {
-  ChatCompletionRequestMessage,
-  Configuration,
-  CreateChatCompletionResponse,
-  OpenAIApi,
-} from 'openai';
-import { catchError, from, map, of } from 'rxjs';
+import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from 'openai';
 import { environment } from 'src/environments/environment';
+
+export type QuoteData = {
+  styledQuote: string;
+  originalQuote: string;
+  play: string;
+  act: string;
+  scene: string;
+};
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShakespeareQuoteService {
+  loading: WritableSignal<boolean> = signal(false);
+  shakespeareQuote: WritableSignal<QuoteData | null> = signal(null);
+  shakespeareQuoteErr: WritableSignal<any | null> = signal(null);
+
   configuration = new Configuration({ apiKey: environment.openai_key });
   openai = new OpenAIApi(this.configuration);
-
-  loading: WritableSignal<boolean> = signal(false);
-
-  shakespeareQuote: WritableSignal<string | null> = signal(null);
-  shakespeareQuoteErr: WritableSignal<any | null> = signal(null);
 
   constructor() {
     console.log('OpenAI key: ' + environment.openai_key);
@@ -29,9 +30,9 @@ export class ShakespeareQuoteService {
     const messages: ChatCompletionRequestMessage[] = [
       {
         role: 'system',
-        content: `You will be asked for random quotes from the works of Shakespeare. You change the quote as if it was given by a ${style}.`,
+        content: `You will be asked for random quotes from the works of Shakespeare. You change the quote as if it was given by a ${style}. You don't use the quote 'To be or not to be'`,
       },
-      { role: 'user', content: `Give me a random shakespeare quote` },
+      { role: 'user', content: `Give me a random shakespeare quote. Your response should be in JSON format {styledQuote: string, originalQuote: string, play: string, act: string, scene: string}` },
     ];
 
     this.openai
@@ -39,11 +40,15 @@ export class ShakespeareQuoteService {
         model: 'gpt-4',
         messages: messages,
         temperature: 1,
-        max_tokens: 1000, // The token count of your prompt plus max_tokens cannot exceed the model's context length. Most models have a context length of 2048 tokens (except for the newest models, which support 4096).
+        max_tokens: 1000,
       })
-      .then((res) =>
-        this.shakespeareQuote.set(res.data.choices[0].message?.content ?? null)
-      )
+      .then((res) => {
+        const content = res.data.choices[0].message?.content;
+        if (content != null) {  
+          const quoteData = JSON.parse(content) as QuoteData;        
+          this.shakespeareQuote.set(quoteData);
+        }
+      })
       .catch((err) => this.shakespeareQuoteErr.set(err))
       .finally(() => this.loading.set(false));
   }
