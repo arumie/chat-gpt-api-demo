@@ -31,11 +31,19 @@ Go to the root folder of the code and install the dependencies using NPM
 
     npm install
 
+Install the angular CLI globally
+
+    npm install -g @angular/cli
+
 ### 1. Implement quote service without JSON formatting
 
 #### Environment
 
-Add the following to **/src/environments/environment.ts**
+Run the following command:
+
+    ng generate environments
+
+Add the following to **/src/environments/environment.development.ts**
 
     export const environment = {
         openai_key: '<TOKEN>'
