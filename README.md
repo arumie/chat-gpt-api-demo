@@ -85,8 +85,7 @@ Add to messages list:
       .then((res) => {
         const content = res.data.choices[0].message?.content;
         if (content != null) {
-          const quoteData = JSON.parse(content) as QuoteData;
-          this.shakespeareQuote.set(quoteData);
+          this.shakespeareQuote.set(content);
         }
       })
       .catch((err) => this.shakespeareQuoteErr.set(err))
@@ -122,6 +121,26 @@ Add the following to the user or system prompt
 #### Update shakespeareQuote type
 
     shakespeareQuote: WritableSignal<QuoteData | null> = signal(null);
+
+#### Parse content from ChatGPT
+
+
+    this.openai
+      .createChatCompletion({
+        model: 'gpt-4',
+        messages: messages,
+        temperature: 1,
+        max_tokens: 1000,
+      })
+      .then((res) => {
+        const content = res.data.choices[0].message?.content;
+        if (content != null) {
+          const quoteData = JSON.parse(content) as QuoteData;
+          this.shakespeareQuote.set(quoteData);
+        }
+      })
+      .catch((err) => this.shakespeareQuoteErr.set(err))
+      .finally(() => this.loading.set(false));
 
 #### Update HTML
 
