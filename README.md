@@ -23,6 +23,10 @@ Install GitBash or equivalent terminal to run NPM: https://git-scm.com/download/
 
 Install IDE to work in. Example VSCode: https://code.visualstudio.com/download
 
+Fetch the repo 
+
+    git clone https://github.com/arumie/chat-gpt-api-demo.git
+
 Go to the **codealong** branch
 
     git checkout codealong
@@ -144,7 +148,7 @@ and use this to init the messages in ``fetchShakespeareQuote
       ];
       this.shakespeareQuoteContext.set(messages);
     } else {
-      const prompt: ChatCompletionRequestMessage = {role: 'user', content: 'Give me another quote'};
+      const prompt: ChatCompletionRequestMessage = {role: 'user', content: 'Give me the next quote in the scene'};
       this.shakespeareQuoteContext.mutate(context => context.push(prompt));
       messages = this.shakespeareQuoteContext();
     }
