@@ -23,6 +23,10 @@ Install GitBash or equivalent terminal to run NPM: https://git-scm.com/download/
 
 Install IDE to work in. Example VSCode: https://code.visualstudio.com/download
 
+OPTIONAL: Sign up for an account on https://platform.openai.com this should give you 5$ free credits for you to use.
+
+You can play with the API here: https://platform.openai.com/playground
+
 Fetch the repo 
 
     git clone https://github.com/arumie/chat-gpt-api-demo.git
@@ -55,10 +59,14 @@ Add the following to **/src/environments/environment.development.ts**
 
 #### Configuration
 
+Add the following as variables to **/src/app/shakespeare-quote-generator/shakespeare-quote-service.ts**
+
     configuration = new Configuration({ apiKey: environment.openai_key });
     openai = new OpenAIApi(this.configuration);
 
 #### System Prompt
+
+Add the following to **fetchShakespeareQuote** to **/src/app/shakespeare-quote-generator/shakespeare-quote-service.ts**
 
     const messages: ChatCompletionRequestMessage[] = [
       {
@@ -74,6 +82,8 @@ Add to messages list:
       { role: 'user', content: `Give me a random shakespeare quote.` },
 
 #### Run createChatCompletion
+
+Add the following to **fetchShakespeareQuote** to **/src/app/shakespeare-quote-generator/shakespeare-quote-service.ts**
 
     this.openai
       .createChatCompletion({
@@ -110,6 +120,8 @@ Add the following to the user or system prompt
 
 #### Add QuoteData type
 
+Add the following to **/src/app/shakespeare-quote-generator/shakespeare-quote-service.ts**
+
     export type QuoteData = {
         styledQuote: string;
         originalQuote: string;
@@ -120,10 +132,11 @@ Add the following to the user or system prompt
 
 #### Update shakespeareQuote type
 
+In **/src/app/shakespeare-quote-generator/shakespeare-quote-service.ts**
+
     shakespeareQuote: WritableSignal<QuoteData | null> = signal(null);
 
 #### Parse content from ChatGPT
-
 
     this.openai
       .createChatCompletion({
@@ -143,6 +156,8 @@ Add the following to the user or system prompt
       .finally(() => this.loading.set(false));
 
 #### Update HTML
+
+Change the following as to **/src/app/shakespeare-quote-generator/shakespeare-quote-generator.html**
 
 Use `<quote-with-format></quote-with-format>` instead of `<quote-no-format></quote-no-format>`
 
