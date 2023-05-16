@@ -42,7 +42,7 @@ export class ShakespeareQuoteService {
       ];
       this.shakespeareQuoteContext.set(messages);
     } else {
-      const prompt: ChatCompletionRequestMessage = {role: 'user', content: 'Give me another quote'};
+      const prompt: ChatCompletionRequestMessage = {role: 'user', content: 'Give me the next quote in the scene'};
       this.shakespeareQuoteContext.mutate(context => context.push(prompt));
       messages = this.shakespeareQuoteContext();
     }

@@ -17,6 +17,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "openai"
+            ],
             "outputPath": "dist/chat-gpt-api-demo",
             "index": "src/index.html",
             "main": "src/main.ts",
